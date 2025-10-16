@@ -6,12 +6,24 @@ from odoo.api import ondelete
 
 class Comentario(models.Model):
     _name = "incidencias.comentario"
-    _description = "guarda los comentarios"
+    _description = "Guarda los comentarios"
 
-    #campos simples
-    contenido = fields.Char(str="Introduce el contenido", required = True)
-    fecha = fields.Datetime(str="Introduce la fecha", required=True)
+    # Campos simples
+    contenido = fields.Char(string="Introduce el contenido", required=True)
+    fecha = fields.Datetime(string="Introduce la fecha", required=True, default=fields.Datetime.now)
 
-    #campor relacionales(foranea)
-    #id_incidencia = fields.Integer(comodel_name="Incidencias.incidencia",str="incidencia",require=True,ondelete="cascade",onupdate="cascade")
-    id_empleado = fields.Integer(comodel_name="hr.employee",str="empleado",require=True,ondelete="cascade")
+    # Relaciones N-1
+    incidencia_id = fields.Many2one(
+        comodel_name='incidencias.incidencia',
+        string='Incidencia',
+        required=True,
+        ondelete="cascade",
+        help="Id de la Incidencia"
+    )
+    empleado_id = fields.Many2one(
+        comodel_name='hr.employee',
+        string='Empleado',
+        required=True,
+        ondelete="cascade",
+        help="Id del empleado"
+    )

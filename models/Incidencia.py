@@ -1,19 +1,40 @@
-from pkg_resources import require
-
-from odoo import fields,models
-from odoo.api import ondelete
-
+from odoo import fields, models
 
 class Incidencia(models.Model):
     _name = "incidencias.incidencia"
-    _description = "guarda las incidencias"
+    _description = "Guarda las incidencias"
 
-    #campos simples
-    titulo = fields.Char(str="Introduce el titulo", required = True)
-    descripcion = fields.Char(str="Introduce una descripcion")
-    fecha_creacion = fields.Datetime(str="Introduce la fecha", required=True)
-    estado_actual =  fields.Boolean(str="True = resuelto, False = sin Resolver", required = True)
+    # Campos simples
+    titulo = fields.Char(string="Introduce el título", required=True)
+    descripcion = fields.Char(string="Introduce una descripción")
+    fecha_creacion = fields.Datetime(string="Fecha de creación", default=fields.Datetime.now)
+    estado_actual = fields.Selection([
+        ('abierta', 'Abierta'),
+        ('en_progreso', 'En Progreso'),
+        ('resuelta', 'Resuelta'),
+        ('cerrada', 'Cerrada')
+    ], string='Estado Actual', default='abierta')
 
-    #campor relacionales(foranea)
-    id_departamento = fields.Integer(comodel_name="hr.department",str="departamento",require=True,ondelete="cascade",)
-    id_empleado = fields.Integer(comodel_name="hr.employee",str="empleado",require=True,ondelete="cascade",)
+    # Relaciones N-1
+    id_departamento = fields.Many2one(
+        comodel_name="hr.department",
+        string="Departamento",
+        required=True,  # ✅ CORREGIDO: required (no require)
+        ondelete="cascade",
+        help="Departamento asociado a la incidencia"
+    )
+    empleado_origen_id = fields.Many2one(
+        comodel_name="hr.employee",
+        string="Empleado Origen",
+        required=True,  # ✅ CORREGIDO: required (no require)
+        ondelete="cascade",
+        help="Empleado que creó la incidencia"
+    )
+
+    # Relaciones 1-N
+    comentario_ids = fields.One2many(
+        comodel_name='incidencias.comentario',  # ✅ CORREGIDO: nombre completo
+        inverse_name='incidencia_id',
+        string='Comentarios',
+        help="Comentarios de la incidencia"
+    )

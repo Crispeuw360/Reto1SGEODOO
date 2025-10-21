@@ -38,3 +38,10 @@ class Incidencia(models.Model):
         string='Comentarios',
         help="Comentarios de la incidencia"
     )
+
+    encuesta_id = fields.Many2one(
+        comodel_name='incidencias.encuesta',
+        string='Encuestas asociadas',
+        unique=True,
+        ondelete='set null'
+    )

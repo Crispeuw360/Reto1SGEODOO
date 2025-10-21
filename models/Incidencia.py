@@ -31,6 +31,14 @@ class Incidencia(models.Model):
         help="Empleado que creó la incidencia"
     )
 
+    encuesta_id = fields.Many2one(
+        comodel_name='incidencias.encuesta',
+        string='Encuesta de Satisfacción',
+        unique=True,  # ✅ Hace la relación 1:1
+        # required=True - por lo tanto es OPCIONAL
+        ondelete='set null'  # Si se borra encuesta, no borrar incidencia
+    )
+
     # Relaciones 1-N
     comentario_ids = fields.One2many(
         comodel_name='incidencias.comentario',  # ✅ CORREGIDO: nombre completo

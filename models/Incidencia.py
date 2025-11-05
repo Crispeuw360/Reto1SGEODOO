@@ -1,12 +1,13 @@
 from odoo import fields, models
 
+
 class Incidencia(models.Model):
     _name = "incidencias.incidencia"
     _description = "Guarda las incidencias"
 
     # Campos simples
-    titulo = fields.Char(string="Introduce el título", required=True)
-    descripcion = fields.Char(string="Introduce una descripción")
+    titulo = fields.Char(string="Título", required=True)
+    descripcion = fields.Char(string="Descripción")
     fecha_creacion = fields.Datetime(string="Fecha de creación", default=fields.Datetime.now)
     estado_actual = fields.Selection([
         ('abierta', 'Abierta'),
@@ -16,40 +17,29 @@ class Incidencia(models.Model):
     ], string='Estado Actual', default='abierta')
 
     # Relaciones N-1
-    id_departamento = fields.Many2one(
+    departamento_id = fields.Many2one(
         comodel_name="hr.department",
         string="Departamento",
-        required=True,  # ✅ CORREGIDO: required (no require)
-        ondelete="cascade",
-        help="Departamento asociado a la incidencia"
+        required=True,
+        ondelete="cascade"
     )
+
     empleado_origen_id = fields.Many2one(
         comodel_name="hr.employee",
         string="Empleado Origen",
-        required=True,  # ✅ CORREGIDO: required (no require)
-        ondelete="cascade",
-        help="Empleado que creó la incidencia"
+        required=True,
+        ondelete="cascade"
     )
 
-    encuesta_id = fields.Many2one(
-        comodel_name='incidencias.encuesta',
-        string='Encuesta de Satisfacción',
-        unique=True,  # ✅ Hace la relación 1:1
-        # required=True - por lo tanto es OPCIONAL
-        ondelete='set null'  # Si se borra encuesta, no borrar incidencia
-    )
-
-    # Relaciones 1-N
+    # Relaciones 1-N (correctas)
     comentario_ids = fields.One2many(
-        comodel_name='incidencias.comentario',  # ✅ CORREGIDO: nombre completo
+        comodel_name='incidencias.comentario',
         inverse_name='incidencia_id',
-        string='Comentarios',
-        help="Comentarios de la incidencia"
+        string='Comentarios'
     )
 
-    encuesta_id = fields.Many2one(
+    encuesta_ids = fields.One2many(
         comodel_name='incidencias.encuesta',
-        string='Encuestas asociadas',
-        unique=True,
-        ondelete='set null'
+        inverse_name='incidencia_id',
+        string='Encuestas'
     )

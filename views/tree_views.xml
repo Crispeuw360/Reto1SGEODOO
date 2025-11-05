@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Vista Lista para Incidencias -->
+    <record id="view_incidencias_tree" model="ir.ui.view">
+        <field name="name">incidencias.tree</field>
+        <field name="model">incidencias.incidencia</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="titulo"/>
+                <field name="estado_actual"/>
+                <field name="id_departamento"/>
+                <field name="empleado_origen_id"/>
+                <field name="fecha_creacion"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Vista Lista para Encuestas -->
+    <record id="view_encuestas_tree" model="ir.ui.view">
+        <field name="name">encuestas.tree</field>
+        <field name="model">incidencias.encuesta</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="titulo"/>
+                <field name="puntuacion"/>
+                <field name="fecha_creacion"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Vista Lista para Comentarios -->
+    <record id="view_comentarios_tree" model="ir.ui.view">
+        <field name="name">comentarios.tree</field>
+        <field name="model">incidencias.comentario</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="contenido"/>
+                <field name="incidencia_id"/>
+                <field name="autor_id"/>
+                <field name="fecha_creacion"/>
+            </tree>
+        </field>
+    </record>
+</odoo>

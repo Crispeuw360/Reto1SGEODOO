@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Vista Formulario para Incidencias -->
+    <record id="view_incidencias_form" model="ir.ui.view">
+        <field name="name">incidencias.form</field>
+        <field name="model">incidencias.incidencia</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="titulo"/>
+                            <field name="descripcion"/>
+                            <field name="estado_actual"/>
+                        </group>
+                        <group>
+                            <field name="id_departamento"/>
+                            <field name="empleado_origen_id"/>
+                            <field name="fecha_creacion"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Comentarios">
+                            <field name="comentario_ids">
+                                <tree>
+                                    <field name="contenido"/>
+                                    <field name="autor_id"/>
+                                    <field name="fecha_creacion"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Encuesta">
+                            <field name="encuesta_id"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Vista Formulario para Encuestas -->
+    <record id="view_encuestas_form" model="ir.ui.view">
+        <field name="name">encuestas.form</field>
+        <field name="model">incidencias.encuesta</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="titulo"/>
+                        <field name="descripcion"/>
+                        <field name="puntuacion"/>
+                        <field name="fecha_creacion"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Vista Formulario para Comentarios -->
+    <record id="view_comentarios_form" model="ir.ui.view">
+        <field name="name">comentarios.form</field>
+        <field name="model">incidencias.comentario</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="contenido"/>
+                        <field name="incidencia_id"/>
+                        <field name="autor_id"/>
+                        <field name="fecha_creacion"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>

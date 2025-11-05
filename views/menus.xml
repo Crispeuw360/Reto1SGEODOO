@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Menú Principal -->
+    <menuitem id="menu_principal" name="Incidencias" sequence="10"/>
+
+    <!-- Submenús -->
+    <menuitem id="menu_incidencias" name="Gestión Incidencias" parent="menu_principal" sequence="10"
+              action="action_incidencias"/>
+
+    <menuitem id="menu_encuestas" name="Encuestas" parent="menu_principal" sequence="20"
+              action="action_encuestas"/>
+
+    <menuitem id="menu_comentarios" name="Comentarios" parent="menu_principal" sequence="30"
+              action="action_comentarios"/>
+</odoo>

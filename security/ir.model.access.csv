@@ -5,3 +5,5 @@ acceso_encuesta_administrador,Acceso Employer Encuesta,model_incidencias_encuest
 acceso_encuesta_participantes,Acceso Employee Encuesta,model_incidencias_encuesta,grupo_participantes,1,1,1,0
 acceso_comentario_administrador,Acceso Employer Comentario,model_incidencias_comentario,grupo_administrador,1,1,1,1
 acceso_comentario_participantes,Acceso Employee Comentario,model_incidencias_comentario,grupo_participantes,1,1,1,0
+acceso_estadistica_administrador,Acceso Employer Estadistica,model_incidencias_estadisticas,grupo_administrador,1,1,1,1
+acceso_estadistica_participantes,Acceso Employee Estadistica,model_incidencias_estadisticas,grupo_participantes,0,0,0,0

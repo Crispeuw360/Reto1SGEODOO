@@ -20,4 +20,11 @@
         <field name="res_model">incidencias.comentario</field>
         <field name="view_mode">tree,form</field>
     </record>
+
+    <!-- Acción básica para Estadisticas -->
+    <record id="action_estadisticas" model="ir.actions.act_window">
+        <field name="name">Estadisticas</field>
+        <field name="res_model">incidencias.estadisticas</field>
+        <field name="view_mode">tree,form</field>
+    </record>
 </odoo>

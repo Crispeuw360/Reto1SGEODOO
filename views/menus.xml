@@ -12,4 +12,7 @@
 
     <menuitem id="menu_comentarios" name="Comentarios" parent="menu_principal" sequence="30"
               action="action_comentarios"/>
+
+    <menuitem id="menu_estadistica" name="Estadistica" parent="menu_principal" sequence="40"
+              action="action_estadisticas"/>
 </odoo>

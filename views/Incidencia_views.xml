@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Vista Búsqueda para Incidencia -->
+    <record id="view_incidencia_search" model="ir.ui.view">
+        <field name="name">incidencias.incidencia.search</field>
+        <field name="model">incidencias.incidencia</field>
+        <field name="arch" type="xml">
+            <search string="Buscar Incidencias">
+                <field name="titulo" string="Título"/>
+                <field name="departamento_id" string="Departamento"/>
+                <field name="empleado_origen_id" string="Empleado"/>
+
+                <filter string="Abiertas" name="abiertas" domain="[('estado_actual','=','abierta')]"/>
+                <filter string="En Progreso" name="en_progreso" domain="[('estado_actual','=','en_progreso')]"/>
+                <filter string="Resueltas" name="resueltas" domain="[('estado_actual','=','resuelta')]"/>
+                <filter string="Cerradas" name="cerradas" domain="[('estado_actual','=','cerrada')]"/>
+
+                <filter string="Por Departamento" name="group_departamento" context="{'group_by': 'departamento_id'}"/>
+                <filter string="Por Estado" name="group_estado" context="{'group_by': 'estado_actual'}"/>
+
+                <separator/>
+                <filter string="Con Comentarios" name="con_comentarios" domain="[('comentario_ids','!=',False)]"/>
+                <filter string="Sin Comentarios" name="sin_comentarios" domain="[('comentario_ids','=',False)]"/>
+
+                <group expand="0" string="Grupo">
+                    <filter string="Este Mes" name="este_mes" domain="[('fecha_creacion','>=',(context_today().replace(day=1)))]"/>
+                    <filter string="Hoy" name="hoy" domain="[('fecha_creacion','>=',context_today())]"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Vista Lista para Incidencia -->
+    <record id="view_incidencia_tree" model="ir.ui.view">
+        <field name="name">incidencias.incidencia.tree</field>
+        <field name="model">incidencias.incidencia</field>
+        <field name="arch" type="xml">
+            <tree string="Incidencias" decoration-danger="estado_actual == 'cerrada'"
+                  decoration-success="estado_actual == 'resuelta'"
+                  decoration-warning="estado_actual == 'en_progreso'"
+                  decoration-info="estado_actual == 'abierta'">
+                <field name="titulo" string="Título"/>
+                <field name="departamento_id" string="Departamento"/>
+                <field name="empleado_origen_id" string="Empleado Origen"/>
+                <field name="fecha_creacion" string="Fecha Creación"/>
+                <field name="estado_actual" widget="badge"
+                       decoration-danger="estado_actual == 'cerrada'"
+                       decoration-success="estado_actual == 'resuelta'"
+                       decoration-warning="estado_actual == 'en_progreso'"
+                       decoration-info="estado_actual == 'abierta'"/>
+                <field name="comentario_ids" string="Comentarios" widget="handle"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Vista Formulario para Incidencia -->
+    <record id="view_incidencia_form" model="ir.ui.view">
+        <field name="name">incidencias.incidencia.form</field>
+        <field name="model">incidencias.incidencia</field>
+        <field name="arch" type="xml">
+            <form string="Incidencia">
+                <header>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="%(action_incidencias)d" type="action"
+                                class="oe_stat_button" icon="fa-list">
+                            <div class="o_stat_info">
+                                <span class="o_stat_text">Lista</span>
+                            </div>
+                        </button>
+                    </div>
+                    <field name="estado_actual" widget="statusbar"
+                           statusbar_visible="abierta,en_progreso,resuelta,cerrada"
+                           statusbar_colors='{"abierta":"red","en_progreso":"blue","resuelta":"green","cerrada":"gray"}'
+                           clickable="true"/>
+                </header>
+
+                <sheet>
+                    <group>
+                        <group string="Información Principal">
+                            <field name="titulo" placeholder="Ingrese el título de la incidencia"
+                                   class="oe_inline"/>
+                            <field name="departamento_id" widget="many2one" options="{'no_create': true}"/>
+                            <field name="empleado_origen_id" widget="many2one"
+                                   options="{'no_create': true, 'no_open': true}"/>
+                        </group>
+
+                        <group string="Estado">
+                            <field name="fecha_creacion" readonly="1"/>
+                            <separator string="Detalles del Estado"/>
+                            <field name="estado_actual" widget="radio"
+                                   decoration-danger="estado_actual == 'cerrada'"
+                                   decoration-success="estado_actual == 'resuelta'"
+                                   decoration-warning="estado_actual == 'en_progreso'"
+                                   decoration-info="estado_actual == 'abierta'"/>
+                        </group>
+                    </group>
+
+                    <notebook>
+                        <page string="Descripción">
+                            <field name="descripcion" nolabel="1" placeholder="Descripción detallada de la incidencia..."
+                                   class="oe_inline" colspan="4"/>
+                        </page>
+
+                        <page string="Comentarios" attrs="{'invisible': [('comentario_ids', '=', [])]}">
+                            <field name="comentario_ids" context="{'default_incidencia_id': active_id}">
+                                <tree string="Comentarios" editable="bottom">
+                                    <field name="empleado_id" widget="many2one"/>
+                                    <field name="fecha" widget="datetime"/>
+                                    <field name="contenido"/>
+                                </tree>
+                                <form>
+                                    <group>
+                                        <field name="empleado_id" required="1"/>
+                                        <field name="contenido" required="1"/>
+                                    </group>
+                                </form>
+                            </field>
+                        </page>
+
+                        <page string="Encuestas" attrs="{'invisible': [('encuesta_ids', '=', [])]}">
+                            <field name="encuesta_ids">
+                                <tree>
+                                    <field name="titulo"/>
+                                    <field name="fecha_respuesta"/>
+                                    <field name="puntuacion"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+
+                <!-- IMPORTANTE: NO HAY FOOTER - Odoo añadirá automáticamente Save y Discard -->
+
+            </form>
+        </field>
+    </record>
+
+    <!-- Vista Kanban para Incidencia -->
+    <record id="view_incidencia_kanban" model="ir.ui.view">
+        <field name="name">incidencias.incidencia.kanban</field>
+        <field name="model">incidencias.incidencia</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="estado_actual">
+                <field name="titulo"/>
+                <field name="estado_actual"/>
+                <field name="departamento_id"/>
+                <field name="fecha_creacion"/>
+
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_global_click">
+                            <div class="o_kanban_record_top">
+                                <div class="o_kanban_record_title">
+                                    <field name="titulo"/>
+                                </div>
+                                <div class="o_kanban_record_subtitle">
+                                    <field name="departamento_id"/>
+                                </div>
+                            </div>
+                            <div class="o_kanban_record_bottom">
+                                <div class="o_kanban_record_bottom_left">
+                                    <field name="fecha_creacion" widget="date"/>
+                                </div>
+                                <div class="o_kanban_record_bottom_right">
+                                    <field name="estado_actual" widget="badge"/>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+</odoo>

@@ -1,10 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <!-- Acción básica para Incidencias -->
+     <!-- Acción para Incidencias -->
     <record id="action_incidencias" model="ir.actions.act_window">
         <field name="name">Incidencias</field>
         <field name="res_model">incidencias.incidencia</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">tree,kanban,form</field>
+        <!-- NOTA: Removemos las referencias a vistas que aún no existen
+             Odoo las encontrará automáticamente por el modelo -->
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No hay incidencias registradas.
+            </p>
+            <p>
+                Cree una nueva incidencia para comenzar a gestionar problemas.
+            </p>
+        </field>
+        <field name="context">
+            {
+                'search_default_abiertas': 1,
+                'default_estado_actual': 'abierta'
+            }
+        </field>
+        <field name="limit">80</field>
     </record>
 
     <!-- Acción básica para Encuestas -->
@@ -14,11 +31,13 @@
         <field name="view_mode">tree,form</field>
     </record>
 
-    <!-- Acción básica para Comentarios -->
+     <!-- Acción para Comentarios -->
     <record id="action_comentarios" model="ir.actions.act_window">
         <field name="name">Comentarios</field>
         <field name="res_model">incidencias.comentario</field>
         <field name="view_mode">tree,form</field>
+        <field name="context">{'search_default_group_incidencia': 1}</field>
+        <field name="limit">50</field>
     </record>
 
     <!-- Acción básica para Estadisticas -->

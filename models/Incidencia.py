@@ -43,3 +43,23 @@ class Incidencia(models.Model):
         inverse_name='incidencia_id',
         string='Encuestas'
     )
+
+    def set_en_progreso(self):
+        for record in self:
+            record.estado_actual = 'en_progreso'
+        return True  # ← AÑADIR ESTO
+
+    def set_resuelta(self):
+        for record in self:
+            record.estado_actual = 'resuelta'
+        return True  # ← AÑADIR ESTO
+
+    def set_cerrada(self):
+        for record in self:
+            record.estado_actual = 'cerrada'
+        return True  # ← AÑADIR ESTO
+
+    def reabrir(self):
+        for record in self:
+            record.estado_actual = 'abierta'
+        return True  # ← AÑADIR ESTO

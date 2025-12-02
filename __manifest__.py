@@ -12,10 +12,9 @@
     'data': [
         'security/groups.xml',
         'security/ir.model.access.csv',
+        'views/Comentario_views.xml',
+        'views/Incidencia_views.xml',
         'views/actions.xml',
-        #'views/tree_views.xml',
-        #'views/form_views.xml',
-        #'views/kanban_views.xml',
         'views/menus.xml',
     ],
     'demo': [],

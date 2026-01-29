@@ -24,6 +24,27 @@
         <field name="limit">80</field>
     </record>
 
+    <!-- Vista heredada de usuarios -->
+    <record id="inherit_incidencia" model="ir.ui.view">
+        <field name="name">Incidencia</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="project.view_task_form2"/>
+        <field name="arch" type="xml">
+            <notebook position="inside">
+                <page string="Incidencias">
+                    <field name="incidencias_id" widget="one2many_list" readonly="1">
+                        <tree>
+                            <field name="titulo" width="50"/>
+                            <field name="descripcion"/>
+                            <field name="fecha_creacion"/>
+
+                        </tree>
+                    </field>
+                </page>
+            </notebook>
+        </field>
+    </record>
+
     <!-- Acción básica para Encuestas -->
     <record id="action_encuestas" model="ir.actions.act_window">
         <field name="name">Encuestas</field>
@@ -35,7 +56,7 @@
     <record id="action_comentarios" model="ir.actions.act_window">
         <field name="name">Comentarios</field>
         <field name="res_model">incidencias.comentario</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">tree,form,kanban</field>
         <field name="context">{'search_default_group_incidencia': 1}</field>
         <field name="limit">50</field>
     </record>

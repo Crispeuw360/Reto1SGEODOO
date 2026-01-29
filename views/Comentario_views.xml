@@ -1,63 +1,115 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <!-- Vista Búsqueda para Comentario -->
+
+    <!-- ===================== -->
+    <!-- VISTA SEARCH -->
+    <!-- ===================== -->
     <record id="view_comentario_search" model="ir.ui.view">
         <field name="name">incidencias.comentario.search</field>
         <field name="model">incidencias.comentario</field>
         <field name="arch" type="xml">
-            <search string="Buscar Comentarios">
-                <field name="contenido" string="Contenido"/>
-                <field name="incidencia_id" string="Incidencia"/>
-                <field name="empleado_id" string="Empleado"/>
-
-                <filter string="Hoy" name="hoy" domain="[('fecha','>=',context_today())]"/>
-                <filter string="Esta Semana" name="esta_semana"
-                        domain="[('fecha','>=',(context_today() - datetime.timedelta(days=7)))]"/>
-
-                <group expand="0" string="Agrupar por">
-                    <filter string="Por Incidencia" name="group_incidencia" context="{'group_by': 'incidencia_id'}"/>
-                    <filter string="Por Empleado" name="group_empleado" context="{'group_by': 'empleado_id'}"/>
-                </group>
+            <search string="Buscar comentarios">
+                <field name="incidencia_id"/>
+                <field name="create_uid"/>
+                <filter string="Hoy"
+                        name="hoy"
+                        domain="[('fecha','&gt;=',context_today())]"/>
             </search>
         </field>
     </record>
 
-    <!-- Vista Lista para Comentario -->
+    <!-- ===================== -->
+    <!-- VISTA KANBAN -->
+    <!-- ===================== -->
+    <record id="view_comentario_kanban" model="ir.ui.view">
+        <field name="name">incidencias.comentario.kanban</field>
+        <field name="model">incidencias.comentario</field>
+        <field name="arch" type="xml">
+            <kanban class="o_kanban_small_column">
+                <field name="incidencia_id"/>
+                <field name="create_uid"/>
+                <field name="fecha"/>
+                <field name="contenido"/>
+
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_card oe_kanban_global_click">
+
+                            <div class="o_kanban_record_top">
+                                <strong>
+                                    <field name="create_uid"/>
+                                </strong>
+                            </div>
+
+                            <div class="text-muted">
+                                <field name="fecha"/>
+                            </div>
+
+                            <div class="mt8">
+                                <field name="contenido"/>
+                            </div>
+
+                            <div class="mt8 text-muted">
+                                <small>
+                                    Incidencia:
+                                    <field name="incidencia_id"/>
+                                </small>
+                            </div>
+
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <!-- ===================== -->
+    <!-- VISTA TREE -->
+    <!-- ===================== -->
     <record id="view_comentario_tree" model="ir.ui.view">
         <field name="name">incidencias.comentario.tree</field>
         <field name="model">incidencias.comentario</field>
         <field name="arch" type="xml">
             <tree string="Comentarios">
-                <field name="incidencia_id" string="Incidencia"/>
-                <field name="empleado_id" string="Empleado"/>
-                <field name="fecha" string="Fecha"/>
-                <field name="contenido" string="Contenido"/>
+                <field name="incidencia_id"/>
+                <field name="create_uid"/>
+                <field name="fecha"/>
+                <field name="contenido"/>
             </tree>
         </field>
     </record>
 
-    <!-- Vista Formulario para Comentario -->
+    <!-- ===================== -->
+    <!-- VISTA FORM -->
+    <!-- ===================== -->
     <record id="view_comentario_form" model="ir.ui.view">
         <field name="name">incidencias.comentario.form</field>
         <field name="model">incidencias.comentario</field>
         <field name="arch" type="xml">
             <form string="Comentario">
                 <sheet>
+
                     <group>
-                        <group string="Información del Comentario">
-                            <field name="contenido" placeholder="Escriba su comentario aquí..."
-                                   class="oe_inline" colspan="4"/>
+                        <group string="Contexto">
+                            <field name="incidencia_id"/>
                         </group>
 
-                        <group string="Relaciones">
-                            <field name="incidencia_id" widget="many2one" options="{'no_create': true}" required="1"/>
-                            <field name="empleado_id" widget="many2one" options="{'no_create': true}" required="1"/>
+                        <group string="Autor">
+                            <field name="create_uid" readonly="1"/>
                             <field name="fecha" readonly="1"/>
                         </group>
                     </group>
-                </sheet>
 
+                    <group string="Contenido">
+                        <field name="contenido"
+                               nolabel="1"
+                               widget="text"
+                               style="min-width: 1265px;"/>
+                    </group>
+
+                </sheet>
             </form>
         </field>
     </record>
+
 </odoo>

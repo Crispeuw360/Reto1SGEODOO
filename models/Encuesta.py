@@ -41,7 +41,6 @@ class Encuesta(models.Model):
         readonly=True
     )
 
-    # ====== CREATE (SOBRECARGA CON @api.model) ======
     @api.model
     def create(self, vals):
         # Forzamos usuario creador
@@ -62,13 +61,12 @@ class Encuesta(models.Model):
             if rec.puntuacion < 0 or rec.puntuacion > 10:
                 raise ValidationError("La puntuación debe estar entre 0 y 10.")
 
-    # ====== RESTRICCIÓN DE EDICIÓN ======
+    # == RESTRICCIÓN DE EDICIÓN ==
     def write(self, vals):
         # Admin técnico puede editar siempre
         if self.env.user.has_group('base.group_system'):
             return super().write(vals)
 
-        # Si está validada, solo permitimos cambiar estado
         solo_cambia_estado = set(vals.keys()).issubset({'estado'})
         if not solo_cambia_estado:
             for rec in self:
@@ -79,7 +77,6 @@ class Encuesta(models.Model):
 
         return super().write(vals)
 
-    # ====== WORKFLOW ======
     def action_enviar(self):
         for rec in self:
             rec.write({'estado': 'enviada'})

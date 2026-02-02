@@ -22,7 +22,7 @@
     <field name="name">reto.encuesta.kanban.v2</field>
     <field name="model">incidencias.encuesta</field>
     <field name="arch" type="xml">
-      <kanban default_group_by="estado">
+      <kanban default_group_by="estado" class="o_kanban_small_column">
         <field name="titulo"/>
         <field name="empleado_id"/>
         <field name="puntuacion"/>
@@ -32,17 +32,28 @@
           <t t-name="kanban-box">
             <div class="oe_kanban_global_click o_kanban_record">
 
-              <div>
-                <strong><field name="titulo"/></strong>
+              <!-- CABECERA -->
+              <div class="o_kanban_record_top mb-1 d-flex justify-content-between align-items-center">
+                <div class="o_kanban_record_title">
+                  <strong>
+                    <field name="titulo"/>
+                  </strong>
+                </div>
+                <field name="estado" widget="badge"/>
               </div>
 
-              <div>
-                <field name="empleado_id"/>
-              </div>
+              <!-- CUERPO -->
+              <div class="o_kanban_record_body">
+                <div class="mb-1">
+                  <i class="fa fa-user me-1" role="img" aria-label="Empleado"/>
+                  <field name="empleado_id"/>
+                </div>
 
-              <div>
-                <span>Puntuación:</span>
-                <field name="puntuacion"/>
+                <div>
+                  <i class="fa fa-star me-1" role="img" aria-label="Puntuación"/>
+                  <span class="me-1">Puntuación:</span>
+                  <field name="puntuacion"/>
+                </div>
               </div>
 
             </div>
@@ -59,7 +70,6 @@
     <field name="arch" type="xml">
       <form string="Encuesta">
 
-        <!-- WORKFLOW: barra de estado + botones -->
         <header>
           <field name="estado"
                  widget="statusbar"
@@ -105,7 +115,7 @@
     </field>
   </record>
 
-  <!-- SEARCH (FILTROS + AGRUPAR POR) -->
+  <!-- SEARCH -->
   <record id="reto_view_encuesta_search_v2" model="ir.ui.view">
     <field name="name">reto.encuesta.search.v2</field>
     <field name="model">incidencias.encuesta</field>
@@ -118,7 +128,7 @@
 
         <separator/>
 
-        <!-- Filtros por estado (AJUSTADOS A TU MODELO) -->
+        <!-- Filtros por estado -->
         <filter string="Borrador" name="f_borrador" domain="[('estado','=','borrador')]"/>
         <filter string="Enviada" name="f_enviada" domain="[('estado','=','enviada')]"/>
         <filter string="Validada" name="f_validada" domain="[('estado','=','validada')]"/>

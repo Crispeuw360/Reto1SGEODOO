@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+  <!-- TREE -->
+  <record id="reto_view_encuesta_tree_v2" model="ir.ui.view">
+    <field name="name">reto.encuesta.tree.v2</field>
+    <field name="model">incidencias.encuesta</field>
+    <field name="arch" type="xml">
+      <tree decoration-muted="estado == 'borrador'"
+            decoration-info="estado == 'enviada'"
+            decoration-success="estado == 'validada'">
+        <field name="titulo" string="Título de la encuesta"/>
+        <field name="empleado_id" string="Empleado que responde"/>
+        <field name="puntuacion" string="Puntuación"/>
+        <field name="estado" string="Estado"/>
+      </tree>
+    </field>
+  </record>
+
+  <!-- KANBAN -->
+  <record id="reto_view_encuesta_kanban_v2" model="ir.ui.view">
+    <field name="name">reto.encuesta.kanban.v2</field>
+    <field name="model">incidencias.encuesta</field>
+    <field name="arch" type="xml">
+      <kanban default_group_by="estado">
+        <field name="titulo"/>
+        <field name="empleado_id"/>
+        <field name="puntuacion"/>
+        <field name="estado"/>
+
+        <templates>
+          <t t-name="kanban-box">
+            <div class="oe_kanban_global_click o_kanban_record">
+
+              <div>
+                <strong><field name="titulo"/></strong>
+              </div>
+
+              <div>
+                <field name="empleado_id"/>
+              </div>
+
+              <div>
+                <span>Puntuación:</span>
+                <field name="puntuacion"/>
+              </div>
+
+            </div>
+          </t>
+        </templates>
+      </kanban>
+    </field>
+  </record>
+
+  <!-- FORM -->
+  <record id="reto_view_encuesta_form_v2" model="ir.ui.view">
+    <field name="name">reto.encuesta.form.v2</field>
+    <field name="model">incidencias.encuesta</field>
+    <field name="arch" type="xml">
+      <form string="Encuesta">
+
+        <!-- WORKFLOW: barra de estado + botones -->
+        <header>
+          <field name="estado"
+                 widget="statusbar"
+                 statusbar_visible="borrador,enviada,validada"/>
+
+          <button name="action_enviar"
+                  type="object"
+                  string="Enviar"
+                  class="btn-primary"
+                  attrs="{'invisible':[('estado','!=','borrador')]}"/>
+
+          <button name="action_validar"
+                  type="object"
+                  string="Validar"
+                  class="btn-primary"
+                  attrs="{'invisible':[('estado','!=','enviada')]}"/>
+
+          <button name="action_volver_borrador"
+                  type="object"
+                  string="Volver a borrador"
+                  attrs="{'invisible':[('estado','=','borrador')]}"/>
+        </header>
+
+        <sheet>
+          <group>
+            <field name="titulo"/>
+            <field name="empleado_id"/>
+            <field name="incidencia_id"/>
+          </group>
+
+          <group>
+            <field name="puntuacion"/>
+            <field name="fecha_respuesta" readonly="1"/>
+            <field name="usuario_creador" readonly="1"/>
+          </group>
+
+          <group>
+            <field name="comentario"/>
+          </group>
+        </sheet>
+
+      </form>
+    </field>
+  </record>
+
+  <!-- SEARCH (FILTROS + AGRUPAR POR) -->
+  <record id="reto_view_encuesta_search_v2" model="ir.ui.view">
+    <field name="name">reto.encuesta.search.v2</field>
+    <field name="model">incidencias.encuesta</field>
+    <field name="arch" type="xml">
+      <search string="Buscar encuestas">
+        <!-- Campos de búsqueda -->
+        <field name="titulo"/>
+        <field name="empleado_id"/>
+        <field name="incidencia_id"/>
+
+        <separator/>
+
+        <!-- Filtros por estado (AJUSTADOS A TU MODELO) -->
+        <filter string="Borrador" name="f_borrador" domain="[('estado','=','borrador')]"/>
+        <filter string="Enviada" name="f_enviada" domain="[('estado','=','enviada')]"/>
+        <filter string="Validada" name="f_validada" domain="[('estado','=','validada')]"/>
+
+        <separator/>
+
+        <!-- Agrupar por -->
+        <group expand="0" string="Agrupar por">
+          <filter string="Empleado" name="g_empleado" context="{'group_by':'empleado_id'}"/>
+          <filter string="Estado" name="g_estado" context="{'group_by':'estado'}"/>
+          <filter string="Incidencia" name="g_incidencia" context="{'group_by':'incidencia_id'}"/>
+        </group>
+      </search>
+    </field>
+  </record>
+
+</odoo>

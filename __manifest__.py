@@ -17,7 +17,7 @@
         # 3. TERCERO: Vistas (que referencian las acciones)
         'views/incidencia_views.xml',
         'views/Comentario_views.xml',
-
+        'views/encuesta_views.xml',
         # 4. CUARTO: Menús (que referencian las acciones)
         'views/menus.xml',
     ],

@@ -41,9 +41,12 @@
                                 </strong>
                             </div>
 
-                            <div class="text-muted">
-                                <field name="fecha"/>
-                            </div>
+                            <div class="o_kanban_card_footer mt8">
+                            <small class="text-muted">
+                                <i class="fa fa-calendar me-1"/>
+                                <field name="fecha" widget="date"/>
+                            </small>
+                        </div>
 
                             <div class="mt8">
                                 <field name="contenido"/>

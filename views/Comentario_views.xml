@@ -95,6 +95,7 @@
                     <group>
                         <group string="Contexto">
                             <field name="incidencia_id"/>
+                             <field name="empleado_id"/>
                         </group>
 
                         <group string="Autor">
